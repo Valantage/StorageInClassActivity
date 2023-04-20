@@ -1,11 +1,14 @@
 package com.example.networkapp
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.provider.Settings
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.RequestQueue
@@ -61,6 +64,25 @@ class MainActivity : AppCompatActivity() {
             } catch (e: IOException) {
                 e.printStackTrace()
             }
+        }
+        if(intent.action == Intent.ACTION_VIEW) {
+            intent.data?.path?.run {
+                replace("/","")
+                downloadComic(this)
+            }
+        }
+
+        findViewById<Button>(R.id.button).setOnClickListener {
+            try{
+                val intent = Intent(
+                    Settings.ACTION_APP_OPEN_BY_DEFAULT_SETTINGS,
+                    Uri.parse("package:${packageName}")
+                )
+                startActivity(intent)
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            }
+
         }
 
     }
